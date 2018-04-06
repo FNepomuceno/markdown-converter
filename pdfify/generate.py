@@ -1,6 +1,15 @@
 #!/usr/bin/env python3
 import json
 
+def _start_header():
+	return ("\\documentclass{article}\n"
+		"\\usepackage[margin=1.0in]{geometry}\n"
+		"\\begin{document}\n"
+		"\\noindent")
+
+def _end_header():
+	return "\\end{document}"
+
 def extract_json(filename):
 	result = ""
 	with open(filename, 'r') as infile:
@@ -9,11 +18,23 @@ def extract_json(filename):
 
 def generate_output(json_data):
 	result = ""
-	start_header = ("\\documentclass{article}\n"
-		"\\begin{document}")
-	end_header = "\\end{document}"
 	placeholder = "\\phantom{1}"
-	result = "{}\n{}\n{}".format(start_header, placeholder, end_header)
+	
+	data = json_data['data']
+	output = []
+	
+	paragraph_started = False
+	for item in data:
+		if item['type'] == 'text':
+			if not paragraph_started:
+				output.append("\\paragraph{}")
+				paragraph_started = True
+			output.append(item['content'])
+	if not output:
+		output = [placeholder]
+	content = "\n".join(output)
+
+	result = "{}\n{}\n{}".format(_start_header(), content, _end_header())
 	return result
 
 def generate_file(in_filename, out_filename):

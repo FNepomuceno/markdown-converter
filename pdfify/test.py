@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import json, os
-from .generate import generate_file
+from .generate import generate_file, _start_header, _end_header
 from utils.test import TestManager, TestCaseBase, test_list
 
 class TestPdfify(TestCaseBase):
@@ -25,12 +25,10 @@ class TestPdfify(TestCaseBase):
 def test_blank(tester):
 	data = {'data':[
 	]}
-	target = (
-		"\\documentclass{article}\n"
-		"\\begin{document}\n"
-		"\\phantom{1}\n"
-		"\\end{document}"
+	content = (
+		"\\phantom{1}"
 	)
+	target = "{}\n{}\n{}".format(_start_header(), content, _end_header())
 	tester.generate_case(data, target)
 
 def test_text(tester):
@@ -40,16 +38,41 @@ def test_text(tester):
 			'content': "word"
 		},
 	]}
-	target = (
-		"\\documentclass{article}\n"
-		"\\begin{document}\n"
-		"word\n"
-		"\\end{document}"
+	content = (
+		"\\paragraph{}\n"
+		"word"
 	)
+	target = "{}\n{}\n{}".format(_start_header(), content, _end_header())
+	tester.generate_case(data, target)
+
+def test_newline(tester):
+	data = {'data':[
+		{
+			'type': "text",
+			'content': "This is a sentence,"
+		},
+		{
+			'type': "newline",
+			'content': None,
+		},
+		{
+			'type': "text",
+			'content': "separated by a newline."
+		},
+		
+	]}
+	content = (
+		"\\paragraph{}\n"
+		"This is a sentence,\n"
+		"\\paragraph{}\n"
+		"separated by a newline."
+	)
+	target = "{}\n{}\n{}".format(_start_header(), content, _end_header())
 	tester.generate_case(data, target)
 
 def test_pdfify():
 	test_list(TestManager(TestPdfify), [
 		test_blank,
 		test_text,
+		test_newline,
 	])

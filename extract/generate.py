@@ -10,6 +10,7 @@ def extract_contents(filename):
 def parse_data(data):
 	result = {}
 	result['data'] = []
+	print(data)
 	return result
 
 def parse_file(filename):

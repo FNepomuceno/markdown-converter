@@ -33,8 +33,21 @@ def test_text(tester):
 	]}
 	tester.generate_case(data, target)
 
+def test_multiline_text(tester):
+	data = "This is a sentence,\nthat is not separated."
+	target = {'data':[
+		{
+			'type': "text",
+			'content': "This is a sentence, that is not separated."
+		},
+	]}
+	tester.generate_case(data, target)
+
 def test_extract():
 	test_list(TestManager(TestExtract), [
 		test_blank,
 		test_text,
+		test_multiline_text,
+		#test_linebreak,
+		#test_newline,
 	])
