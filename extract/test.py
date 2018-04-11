@@ -43,11 +43,54 @@ def test_multiline_text(tester):
 	]}
 	tester.generate_case(data, target)
 
+def test_linebreak(tester):
+	data = "This is a sentence,  \nthat is separated by a linebreak."
+	target = {'data':[
+		{
+			'type': "text",
+			'content': "This is a sentence,\nthat is separated by a linebreak."
+		},
+	]}
+	tester.generate_case(data, target)
+
+def test_newline(tester):
+	data = "This is a sentence,\n\nthat is separated by a newline."
+	target = {'data':[
+		{
+			'type': "text",
+			'content': "This is a sentence,"
+		},
+		{
+			'type': "paragraph",
+			'content': None
+		},
+		{
+			'type': "text",
+			'content': "that is separated by a linebreak."
+		},
+	]}
+	tester.generate_case(data, target)
+
+def test_section(tester):
+	data = "#This is a section\nThis is some text."
+	target = {'data':[
+		{
+			'type': "header1",
+			'content': "This is a section"
+		},
+		{
+			'type': "text",
+			'content': "This is some text."
+		},
+	]}
+	tester.generate_case(data, target)
+
 def test_extract():
 	test_list(TestManager(TestExtract), [
 		test_blank,
 		test_text,
 		test_multiline_text,
-		#test_linebreak,
-		#test_newline,
+		test_linebreak,
+		test_newline,
+		test_section,
 	])

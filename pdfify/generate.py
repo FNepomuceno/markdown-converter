@@ -30,6 +30,8 @@ def generate_output(json_data):
 				output.append("\\paragraph{}")
 				paragraph_started = True
 			output.append(item['content'])
+		elif item['type'] == 'paragraph':
+			output.append("\\paragraph{}")
 	if not output:
 		output = [placeholder]
 	content = "\n".join(output)

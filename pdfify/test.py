@@ -52,7 +52,7 @@ def test_newline(tester):
 			'content': "This is a sentence,"
 		},
 		{
-			'type': "newline",
+			'type': "paragraph",
 			'content': None,
 		},
 		{
@@ -70,9 +70,30 @@ def test_newline(tester):
 	target = "{}\n{}\n{}".format(_start_header(), content, _end_header())
 	tester.generate_case(data, target)
 
+def test_section_header(tester):
+	data = {'data':[
+		{
+			'type': "header1",
+			'content': "This is a section"
+		},
+		{
+			'type': "text",
+			'content': "This is some text."
+		},
+		
+	]}
+	content = (
+		"\\section*{This is a section}\n"
+		"\\paragraph{}\n"
+		"This is some text."
+	)
+	target = "{}\n{}\n{}".format(_start_header(), content, _end_header())
+	tester.generate_case(data, target)
+
 def test_pdfify():
 	test_list(TestManager(TestPdfify), [
 		test_blank,
 		test_text,
 		test_newline,
+		test_section_header,
 	])
