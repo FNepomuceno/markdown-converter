@@ -85,6 +85,32 @@ def test_section(tester):
 	]}
 	tester.generate_case(data, target)
 
+def test_simple(tester):
+	data = "This is some text in a paragraph.\n\nThis is some text in another paragraph,  \nbut this other text is only in another line.\n\nThis is some text in yet another paragraph\nand this text is not on another line."
+	target = {'data':[
+		{
+			'type': "text",
+			'content': "This is some text in a paragraph."
+		},
+		{
+			'type': "paragraph",
+			'content': None
+		},
+		{
+			'type': "text",
+			'content': "This is some text in another paragraph,\nbut this other text is only in another line."
+		},
+		{
+			'type': "paragraph",
+			'content': None
+		},
+		{
+			'type': "text",
+			'content': "This is some text in yet another paragraph and this text is not on another line."
+		},
+	]}
+	tester.generate_case(data, target)
+
 def test_extract():
 	test_list(TestManager(TestExtract), [
 		test_blank,
@@ -93,4 +119,5 @@ def test_extract():
 		test_linebreak,
 		test_newline,
 		test_section,
+		test_simple,
 	])
