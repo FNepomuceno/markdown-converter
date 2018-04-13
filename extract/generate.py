@@ -8,6 +8,9 @@ def extract_contents(filename):
 	#print("INPUT:\n{}".format(result))
 	return result
 
+def add_token(data_list, token_type, token_text):
+	data_list.append({'type': token_type, 'content': token_text})
+
 def parse_data(data):
 	result = {}
 	result['data'] = []
@@ -15,35 +18,45 @@ def parse_data(data):
 		return result
 	token_text = ""
 	token_type = "text"
-	subtoken = ""
 	for letter in data:
 		if letter == ' ':
-			if subtoken == "\n":
+			if token_text == "\n":
 				pass
-			elif subtoken == " ":
-				subtoken = "\n"
+			elif token_text == " ":
+				token_text = "\n"
 			else:
-				subtoken = " "
+				add_token(result['data'], token_type, token_text)
+				token_text = " "
+				token_type = "text"
 		elif letter == '\n':
-			result['data'].append({'type': token_type, 'content': token_text+subtoken})
-			subtoken = ""
-			token_text = ""
+			if token_text is None:
+				pass
+			elif token_text == "":
+				token_text = None
+				token_type = "paragraph"
+			else:
+				add_token(result['data'], token_type, token_text)
+				token_text = ""
+				token_type = "text"
+		elif token_type != "text":
+			add_token(result['data'], token_type, token_text)
+			token_text = letter
 			token_type = "text"
 		else:
-			token_text = token_text + subtoken + letter
-			subtoken = ""
-	result['data'].append({'type': token_type, 'content': token_text+subtoken})
+			token_text = token_text + letter
+	add_token(result['data'], token_type, token_text)
 	return result
 
 def clean_data(data):
 	old_data = data['data']
 	new_data = []
 	old_item = None
+	#print(data)
 	for item in old_data:
 		if old_item is not None and item['type'] == old_item['type']:
 			if item['type'] == "text" :
 				separator = " "
-				if old_item['content'][-1].isspace():
+				if item['content'][0].isspace() or old_item['content'][-1].isspace():
 					separator = ""
 				old_item['content'] = old_item['content'] + separator + item['content']
 		else:

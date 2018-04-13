@@ -66,7 +66,7 @@ def test_newline(tester):
 		},
 		{
 			'type': "text",
-			'content': "that is separated by a linebreak."
+			'content': "that is separated by a newline."
 		},
 	]}
 	tester.generate_case(data, target)
