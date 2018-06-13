@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import json, os, traceback
 
+DEBUG = True
+
 class TestException(Exception):
 	def __init__(self, output, target):
 		self.output = output

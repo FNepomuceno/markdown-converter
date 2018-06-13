@@ -4,6 +4,7 @@ import json
 def _start_header():
 	return ("\\documentclass{article}\n"
 		"\\usepackage[margin=1.0in]{geometry}\n"
+		"\\usepackage[parfill]{parskip}\n"
 		"\\begin{document}\n"
 		"\\noindent")
 

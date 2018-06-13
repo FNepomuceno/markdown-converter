@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 from string import punctuation
+from utils.test import DEBUG
 
 def extract_contents(filename):
 	result = ""
 	with open(filename, 'r') as infile:
 		result = infile.read()
-	#print("INPUT:\n{}".format(result))
+	if DEBUG:
+		print("INPUT:\n{}".format(result))
 	return result
 
 def add_token(data_list, token_type, token_text):
@@ -51,12 +53,17 @@ def clean_data(data):
 	old_data = data['data']
 	new_data = []
 	old_item = None
-	#print(data)
+	if DEBUG:
+		print(data)
 	for item in old_data:
+		if DEBUG is True:
+			print(item)
 		if old_item is not None and item['type'] == old_item['type']:
 			if item['type'] == "text" :
 				separator = " "
-				if item['content'][0].isspace() or old_item['content'][-1].isspace():
+				if item['content'] == '' or \
+						item['content'][0].isspace() or \
+						old_item['content'][-1].isspace():
 					separator = ""
 				old_item['content'] = old_item['content'] + separator + item['content']
 		else:

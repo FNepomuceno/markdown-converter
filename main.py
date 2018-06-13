@@ -2,8 +2,7 @@
 import sys, json, os
 from extract.generate import parse_file
 from pdfify.generate import generate_file
-
-DEBUG = False
+from utils.test import DEBUG
 
 def make_inter_json(input_file, json_file):
 	data = parse_file(input_file)

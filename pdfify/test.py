@@ -39,7 +39,6 @@ def test_text(tester):
 		},
 	]}
 	content = (
-		"\\paragraph{}\n"
 		"word"
 	)
 	target = "{}\n{}\n{}".format(_start_header(), content, _end_header())
@@ -62,9 +61,8 @@ def test_newline(tester):
 		
 	]}
 	content = (
-		"\\paragraph{}\n"
 		"This is a sentence,\n"
-		"\\paragraph{}\n"
+		"\n"
 		"separated by a newline."
 	)
 	target = "{}\n{}\n{}".format(_start_header(), content, _end_header())
@@ -84,7 +82,6 @@ def test_section_header(tester):
 	]}
 	content = (
 		"\\section*{This is a section}\n"
-		"\\paragraph{}\n"
 		"This is some text."
 	)
 	target = "{}\n{}\n{}".format(_start_header(), content, _end_header())
@@ -114,12 +111,11 @@ def test_simple(tester):
 		},
 	]}
 	content = (
-		"\\paragraph{}\n"
 		"This is some text in a paragraph.\n"
-		"\\paragraph{}\n"
-		"This is some text in another paragraph,\n"
+		"\n"
+		"This is some text in another paragraph,\\\\"
 		"but this other text is only in another line.\n"
-		"\\paragraph{}\n"
+		"\n"
 		"This is some text in yet another paragraph "
 		"and this text is not on another line."
 	)
