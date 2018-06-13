@@ -113,7 +113,7 @@ def test_simple(tester):
 	content = (
 		"This is some text in a paragraph.\n"
 		"\n"
-		"This is some text in another paragraph,\\\\"
+		"This is some text in another paragraph,\\\\\n"
 		"but this other text is only in another line.\n"
 		"\n"
 		"This is some text in yet another paragraph "

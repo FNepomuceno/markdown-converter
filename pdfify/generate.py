@@ -5,8 +5,7 @@ def _start_header():
 	return ("\\documentclass{article}\n"
 		"\\usepackage[margin=1.0in]{geometry}\n"
 		"\\usepackage[parfill]{parskip}\n"
-		"\\begin{document}\n"
-		"\\noindent")
+		"\\begin{document}")
 
 def _end_header():
 	return "\\end{document}"
@@ -28,11 +27,12 @@ def generate_output(json_data):
 	for item in data:
 		if item['type'] == 'text':
 			if not paragraph_started:
-				output.append("\\paragraph{}")
 				paragraph_started = True
-			output.append(item['content'])
+			item_string = item['content']
+			item_string = "\\\\\n".join(item_string.split("\n"))
+			output.append(item_string)
 		elif item['type'] == 'paragraph':
-			output.append("\\paragraph{}")
+			output.append("")
 	if not output:
 		output = [placeholder]
 	content = "\n".join(output)
