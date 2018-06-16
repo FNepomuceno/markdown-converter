@@ -171,4 +171,5 @@ def test_extract():
 		test_newline,
 		test_section,
 		test_simple,
+		test_subsection,
 	])

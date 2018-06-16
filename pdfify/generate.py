@@ -31,6 +31,12 @@ def generate_output(json_data):
 			item_string = item['content']
 			item_string = "\\\\\n".join(item_string.split("\n"))
 			output.append(item_string)
+		elif item['type'] == 'header1':
+			template = "\\section*{{\Huge {}}}"
+			item_string = item['content']
+			item_string = template.format(item_string)
+			output.append(item_string)
+			paragraph_started = False
 		elif item['type'] == 'paragraph':
 			output.append("")
 	if not output:

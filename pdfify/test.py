@@ -81,7 +81,7 @@ def test_section_header(tester):
 		
 	]}
 	content = (
-		"\\section*{This is a section}\n"
+		"\\section*{\Huge This is a section}\n"
 		"This is some text."
 	)
 	target = "{}\n{}\n{}".format(_start_header(), content, _end_header())
@@ -122,6 +122,50 @@ def test_simple(tester):
 	target = "{}\n{}\n{}".format(_start_header(), content, _end_header())
 	tester.generate_case(data, target)
 
+def test_subsection_header(tester):
+	data = {'data':[
+		{
+			'type': "header1",
+			'content': "This is a header-1"
+		},
+		{
+			'type': "header2",
+			'content': "This is a header-2"
+		},
+		{
+			'type': "header3",
+			'content': "This is a header-3"
+		},
+		{
+			'type': "header4",
+			'content': "This is a header-4"
+		},
+		{
+			'type': "header5",
+			'content': "This is a header-5"
+		},
+		{
+			'type': "header6",
+			'content': "This is a header-6"
+		},
+		{
+			'type': "text",
+			'content': "This is some text."
+		},
+		
+	]}
+	content = (
+		"\\section*{\Huge This is a header-1}\n"
+		"\\subsection*{\huge This is a header-2}\n"
+		"\\subsubsection*{\LARGE This is a header-3}\n"
+		"\\subsubsection*{\Large This is a header-4}\n"
+		"\\subsubsection*{\large This is a header-5}\n"
+		"\\subsubsection*{This is a header-6}\n"
+		"This is some text."
+	)
+	target = "{}\n{}\n{}".format(_start_header(), content, _end_header())
+	tester.generate_case(data, target)
+
 def test_pdfify():
 	test_list(TestManager(TestPdfify), [
 		test_blank,
@@ -129,4 +173,5 @@ def test_pdfify():
 		test_newline,
 		test_section_header,
 		test_simple,
+		test_subsection_header,
 	])
