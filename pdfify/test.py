@@ -81,7 +81,7 @@ def test_section_header(tester):
 		
 	]}
 	content = (
-		"\\section*{\Huge This is a section}\n"
+		"\\section*{This is a section}\n"
 		"This is some text."
 	)
 	target = "{}\n{}\n{}".format(_start_header(), content, _end_header())
@@ -155,13 +155,54 @@ def test_subsection_header(tester):
 		
 	]}
 	content = (
-		"\\section*{\Huge This is a header-1}\n"
-		"\\subsection*{\huge This is a header-2}\n"
-		"\\subsubsection*{\LARGE This is a header-3}\n"
-		"\\subsubsection*{\Large This is a header-4}\n"
-		"\\subsubsection*{\large This is a header-5}\n"
+		"\\section*{This is a header-1}\n"
+		"\\subsection*{This is a header-2}\n"
+		"\\subsubsection*{This is a header-3}\n"
+		"\\subsubsection*{This is a header-4}\n"
+		"\\subsubsection*{This is a header-5}\n"
 		"\\subsubsection*{This is a header-6}\n"
 		"This is some text."
+	)
+	target = "{}\n{}\n{}".format(_start_header(), content, _end_header())
+	tester.generate_case(data, target)
+
+def test_emphasis(tester):
+	data = {'data':[
+		{
+			'type': "text",
+			'content': ("This is a sample text with words that are "
+				"emphasised. Some words are ")
+		},
+		{
+			'type': "bold",
+			'content': "bold"
+		},
+		{
+			'type': "text",
+			'content': ", some words are "
+		},
+		{
+			'type': "italic",
+			'content': "italic"
+		},
+		{
+			'type': "text",
+			'content': ", and some words are "
+		},
+		{
+			'type': "bolditalic",
+			'content': "both bold and italic"
+		},
+		{
+			'type': "text",
+			'content': "."
+		},
+	]}
+	content = (
+		"This is a sampletext with words that are emphasized. "
+		"Some words are \\textbf{bold}, some words "
+		"are \\textit{italic}, and some words are "
+		"\\textbf{\\textit{both bold and italic}}."
 	)
 	target = "{}\n{}\n{}".format(_start_header(), content, _end_header())
 	tester.generate_case(data, target)
@@ -174,4 +215,5 @@ def test_pdfify():
 		test_section_header,
 		test_simple,
 		test_subsection_header,
+		test_emphasis,
 	])

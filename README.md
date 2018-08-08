@@ -24,3 +24,9 @@ your input file is `documents/text.txt`, then the input directory is
 if you want to output the file in `documents/`, the output directory
 is just `documents/`. The resulting file if the file name is `text.txt`
 is `documents/text.pdf`
+
+## Syntax(WIP)
+
+### Headings
+Headings are created by adding number signs(#) at the beginning of a
+line, then a space before the word or phrase.

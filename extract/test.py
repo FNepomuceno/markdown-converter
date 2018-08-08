@@ -162,6 +162,119 @@ def test_subsection(tester):
 	]}
 	tester.generate_case(data, target)
 
+def test_section_alternate(tester):
+	data = ("This is a section\n"
+		"===\n"
+		"This is some text\n"
+		"\n"
+		"This is also a section\n"
+		"======================\n"
+		"This is some other text\n"
+		"\n"
+		"This is a subsection\n"
+		"---\n"
+		"This is some text\n"
+		"\n"
+		"This is also a subsection\n"
+		"-------------------------\n"
+		"This is some other text\n"
+		"\n"
+		"This is a subsubsection\n"
+		"+++\n"
+		"This is some text\n"
+		"\n"
+		"This is also a subsubsection\n"
+		"++++++++++++++++++++++++++++\n"
+		"This is some other text\n")
+	target = {'data':[
+		{
+			'type': "header1",
+			'content': "This is a section"
+		},
+		{
+			'type': "text",
+			'content': "This is some text"
+		},
+		{
+			'type': "header1",
+			'content': "This is also a section"
+		},
+		{
+			'type': "text",
+			'content': "This is some other text"
+		},
+		{
+			'type': "header2",
+			'content': "This is a subsection"
+		},
+		{
+			'type': "text",
+			'content': "This is some text"
+		},
+		{
+			'type': "header2",
+			'content': "This is also a subsection"
+		},
+		{
+			'type': "text",
+			'content': "This is some other text"
+		},
+		{
+			'type': "header3",
+			'content': "This is a subsubsection"
+		},
+		{
+			'type': "text",
+			'content': "This is some text"
+		},
+		{
+			'type': "header3",
+			'content': "This is also a subsubsection"
+		},
+		{
+			'type': "text",
+			'content': "This is some other text"
+		},
+	]}
+	tester.generate_case(data, target)
+
+def test_emphasis(tester):
+	data = ("This is a sample text with words that are emphasized. "
+		"Some words are **bold**, some words are *italic*, and some "
+		"words are ***both bold and italic***.")
+	target = {'data':[
+		{
+			'type': "text",
+			'content': ("This is a sample text with words that are "
+				"emphasised. Some words are ")
+		},
+		{
+			'type': "bold",
+			'content': "bold"
+		},
+		{
+			'type': "text",
+			'content': ", some words are "
+		},
+		{
+			'type': "italic",
+			'content': "italic"
+		},
+		{
+			'type': "text",
+			'content': ", and some words are "
+		},
+		{
+			'type': "bolditalic",
+			'content': "both bold and italic"
+		},
+		{
+			'type': "text",
+			'content': "."
+		},
+	]}
+	tester.generate_case(data, target)
+
 def test_extract():
 	test_list(TestManager(TestExtract), [
 		test_blank,
@@ -172,4 +285,6 @@ def test_extract():
 		test_section,
 		test_simple,
 		test_subsection,
+		test_section_alternate,
+		test_emphasis,
 	])

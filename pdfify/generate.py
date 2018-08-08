@@ -31,8 +31,18 @@ def generate_output(json_data):
 			item_string = item['content']
 			item_string = "\\\\\n".join(item_string.split("\n"))
 			output.append(item_string)
-		elif item['type'] == 'header1':
-			template = "\\section*{{\Huge {}}}"
+		elif item['type'] == 'header1' or\
+				item['type'] == 'header2' or\
+				item['type'] == 'header3' or\
+				item['type'] == 'header4' or\
+				item['type'] == 'header5' or\
+				item['type'] == 'header6':
+			if item['type'] == 'header1':
+				template = "\\section*{{{}}}"
+			elif item['type'] == 'header2':
+				template = "\\subsection*{{{}}}"
+			else:
+				template = "\\subsubsection*{{{}}}"
 			item_string = item['content']
 			item_string = template.format(item_string)
 			output.append(item_string)
