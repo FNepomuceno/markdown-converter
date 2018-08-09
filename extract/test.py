@@ -80,7 +80,7 @@ def test_section(tester):
 		"This is some text.")
 	target = {'data':[
 		{
-			'type': "header1",
+			'type': "heading1",
 			'content': "This is a section"
 		},
 		{
@@ -123,37 +123,37 @@ def test_simple(tester):
 	tester.generate_case(data, target)
 
 def test_subsection(tester):
-	data = ("# This is a header-1\n"
-		"## This is a header-2\n"
-		"### This is a header-3\n"
-		"#### This is a header-4\n"
-		"##### This is a header-5\n"
-		"###### This is a header-6\n"
+	data = ("# This is a heading-1\n"
+		"## This is a heading-2\n"
+		"### This is a heading-3\n"
+		"#### This is a heading-4\n"
+		"##### This is a heading-5\n"
+		"###### This is a heading-6\n"
 		"This is some text.")
 	target = {'data':[
 		{
-			'type': "header1",
-			'content': "This is a header-1"
+			'type': "heading1",
+			'content': "This is a heading-1"
 		},
 		{
-			'type': "header2",
-			'content': "This is a header-2"
+			'type': "heading2",
+			'content': "This is a heading-2"
 		},
 		{
-			'type': "header3",
-			'content': "This is a header-3"
+			'type': "heading3",
+			'content': "This is a heading-3"
 		},
 		{
-			'type': "header4",
-			'content': "This is a header-4"
+			'type': "heading4",
+			'content': "This is a heading-4"
 		},
 		{
-			'type': "header5",
-			'content': "This is a header-5"
+			'type': "heading5",
+			'content': "This is a heading-5"
 		},
 		{
-			'type': "header6",
-			'content': "This is a header-6"
+			'type': "heading6",
+			'content': "This is a heading-6"
 		},
 		{
 			'type': "text",
@@ -162,33 +162,21 @@ def test_subsection(tester):
 	]}
 	tester.generate_case(data, target)
 
-def test_section_alternate(tester):
+def test_section_alt_basic(tester):
 	data = ("This is a section\n"
 		"===\n"
 		"This is some text\n"
-		"\n"
-		"This is also a section\n"
-		"======================\n"
-		"This is some other text\n"
 		"\n"
 		"This is a subsection\n"
 		"---\n"
 		"This is some text\n"
 		"\n"
-		"This is also a subsection\n"
-		"-------------------------\n"
-		"This is some other text\n"
-		"\n"
 		"This is a subsubsection\n"
 		"+++\n"
-		"This is some text\n"
-		"\n"
-		"This is also a subsubsection\n"
-		"++++++++++++++++++++++++++++\n"
-		"This is some other text\n")
+		"This is some text\n")
 	target = {'data':[
 		{
-			'type': "header1",
+			'type': "heading1",
 			'content': "This is a section"
 		},
 		{
@@ -196,15 +184,7 @@ def test_section_alternate(tester):
 			'content': "This is some text"
 		},
 		{
-			'type': "header1",
-			'content': "This is also a section"
-		},
-		{
-			'type': "text",
-			'content': "This is some other text"
-		},
-		{
-			'type': "header2",
+			'type': "heading2",
 			'content': "This is a subsection"
 		},
 		{
@@ -212,7 +192,39 @@ def test_section_alternate(tester):
 			'content': "This is some text"
 		},
 		{
-			'type': "header2",
+			'type': "heading3",
+			'content': "This is a subsubsection"
+		},
+		{
+			'type': "text",
+			'content': "This is some text"
+		},
+	]}
+	tester.generate_case(data, target)
+
+def test_section_alt_long(tester):
+	data = ("This is also a section\n"
+		"======================\n"
+		"This is some other text\n"
+		"\n"
+		"This is also a subsection\n"
+		"-------------------------\n"
+		"This is some other text\n"
+		"\n"
+		"This is also a subsubsection\n"
+		"++++++++++++++++++++++++++++\n"
+		"This is some other text\n")
+	target = {'data':[
+		{
+			'type': "heading1",
+			'content': "This is also a section"
+		},
+		{
+			'type': "text",
+			'content': "This is some other text"
+		},
+		{
+			'type': "heading2",
 			'content': "This is also a subsection"
 		},
 		{
@@ -220,20 +232,42 @@ def test_section_alternate(tester):
 			'content': "This is some other text"
 		},
 		{
-			'type': "header3",
-			'content': "This is a subsubsection"
+			'type': "heading3",
+			'content': "This is also a subsubsection"
+		},
+		{
+			'type': "text",
+			'content': "This is some other text"
+		},
+	]}
+	tester.generate_case(data, target)
+
+def test_section_alt_spacing(tester):
+	data = ("This is a section\n"
+		"===\n"
+		"This is some text\n"
+		"\n"
+		"This text prevents the below from working"
+		"This is not a subsection\n"
+		"---\n"
+		"This is some other text\n")
+	target = {'data':[
+		{
+			'type': "heading1",
+			'content': "This is a section"
 		},
 		{
 			'type': "text",
 			'content': "This is some text"
 		},
 		{
-			'type': "header3",
-			'content': "This is also a subsubsection"
+			'type': "paragraph",
+			'content': None
 		},
 		{
 			'type': "text",
-			'content': "This is some other text"
+			'content': ("This text prevents the below from working "
+				"This is not a subsection --- This is some other text")
 		},
 	]}
 	tester.generate_case(data, target)
@@ -285,6 +319,8 @@ def test_extract():
 		test_section,
 		test_simple,
 		test_subsection,
-		test_section_alternate,
+		test_section_alt_basic,
+		test_section_alt_long,
+		test_section_alt_spacing,
 		test_emphasis,
 	])

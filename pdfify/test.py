@@ -68,10 +68,10 @@ def test_newline(tester):
 	target = "{}\n{}\n{}".format(_start_header(), content, _end_header())
 	tester.generate_case(data, target)
 
-def test_section_header(tester):
+def test_section_heading(tester):
 	data = {'data':[
 		{
-			'type': "header1",
+			'type': "heading1",
 			'content': "This is a section"
 		},
 		{
@@ -122,31 +122,31 @@ def test_simple(tester):
 	target = "{}\n{}\n{}".format(_start_header(), content, _end_header())
 	tester.generate_case(data, target)
 
-def test_subsection_header(tester):
+def test_subsection_heading(tester):
 	data = {'data':[
 		{
-			'type': "header1",
-			'content': "This is a header-1"
+			'type': "heading1",
+			'content': "This is a heading-1"
 		},
 		{
-			'type': "header2",
-			'content': "This is a header-2"
+			'type': "heading2",
+			'content': "This is a heading-2"
 		},
 		{
-			'type': "header3",
-			'content': "This is a header-3"
+			'type': "heading3",
+			'content': "This is a heading-3"
 		},
 		{
-			'type': "header4",
-			'content': "This is a header-4"
+			'type': "heading4",
+			'content': "This is a heading-4"
 		},
 		{
-			'type': "header5",
-			'content': "This is a header-5"
+			'type': "heading5",
+			'content': "This is a heading-5"
 		},
 		{
-			'type': "header6",
-			'content': "This is a header-6"
+			'type': "heading6",
+			'content': "This is a heading-6"
 		},
 		{
 			'type': "text",
@@ -155,12 +155,12 @@ def test_subsection_header(tester):
 		
 	]}
 	content = (
-		"\\section*{This is a header-1}\n"
-		"\\subsection*{This is a header-2}\n"
-		"\\subsubsection*{This is a header-3}\n"
-		"\\subsubsection*{This is a header-4}\n"
-		"\\subsubsection*{This is a header-5}\n"
-		"\\subsubsection*{This is a header-6}\n"
+		"\\section*{This is a heading-1}\n"
+		"\\subsection*{This is a heading-2}\n"
+		"\\subsubsection*{This is a heading-3}\n"
+		"\\subsubsection*{This is a heading-4}\n"
+		"\\subsubsection*{This is a heading-5}\n"
+		"\\subsubsection*{This is a heading-6}\n"
 		"This is some text."
 	)
 	target = "{}\n{}\n{}".format(_start_header(), content, _end_header())
@@ -212,8 +212,8 @@ def test_pdfify():
 		test_blank,
 		test_text,
 		test_newline,
-		test_section_header,
+		test_section_heading,
 		test_simple,
-		test_subsection_header,
+		test_subsection_heading,
 		test_emphasis,
 	])
