@@ -10,19 +10,49 @@ def extract_contents(filename):
 		print("INPUT:\n{}".format(result))
 	return result
 
-def add_token(data_list, token_type, token_text):
-	data_list.append({'type': token_type, 'content': token_text})
-
 # TODO: Clean up this code
-class BaseParseState:
-	def parse_text(text=""):
-		result = {}
-		result['data'] = []
-		if text == "":
-			return result
-		token_text = ""
-		token_type = "text"
-		for letter in text:
+class ParseToken:
+	def __init__(self, token_text=None, token_type=None):
+		self.text = token_text
+		self.type = token_type
+		self.finished = False
+
+	def change_content(self, new_text=None, new_type=None):
+		if not self.finished:
+			self.text = new_text
+			self.type = new_type
+		else:
+			# Finished already, cannot make changes
+			pass
+
+	def finalize(self):
+		self.finished = True
+
+	def extract_entry(self):
+		if self.finished:
+			return {'type': self.type, 'content': self.text}
+		else:
+			# Refuse because content can still change
+			return None
+
+	def __str__(self):
+		return str({'type': self.type, 'content': self.text})
+
+class BaseParser:
+	def parse_text(text="", index = 0, token=None):
+		if token is None:
+			new_token = ParseToken()
+		else:
+			new_token = token
+		letter = text[index]
+		token_text = new_token.text
+		token_type = new_token.type
+		make_new_token = False
+		new_type = None
+
+		#if DEBUG:
+		#print(letter)
+		if True:
 			if letter == ' ':
 				if token_text == "#":
 					token_text = ""
@@ -55,33 +85,46 @@ class BaseParseState:
 						token_type == "heading6") and \
 						token_text == "":
 					pass
-				else:
-					add_token(result['data'], token_type, token_text)
+				elif token_text is None:
 					token_text = " "
-			elif letter == '\n':
-				if token_text is None:
-					pass
-				elif token_text == "":
-					token_text = None
-					token_type = "paragraph"
 				else:
-					add_token(result['data'], token_type, token_text)
-					token_text = ""
+					make_new_token = True
+					new_type = token_type
+			elif letter == '\n':
+				#print("newline")
+				if token_text is None and token_type == "text":
+					token_type = "paragraph"
+				elif token_type is None:
 					token_type = "text"
+				else:
+					make_new_token = True
 			elif token_type != "text" and \
 					token_type != "heading1" and \
 					token_type != "heading2" and \
 					token_type != "heading3" and \
 					token_type != "heading4" and \
 					token_type != "heading5" and \
-					token_type != "heading6":
-				add_token(result['data'], token_type, token_text)
-				token_text = letter
-				token_type = "text"
+					token_type != "heading6" and \
+					token_type is not None:
+				make_new_token = True
 			else:
-				token_text = token_text + letter
-		add_token(result['data'], token_type, token_text)
-		return result
+				if token_text is None:
+					token_text = letter
+					if token_type is None:
+						token_type = "text"
+				else:
+					token_text = token_text + letter
+		new_token.change_content(token_text, token_type)
+
+		if make_new_token:
+			new_index = index
+			new_token.finalize()
+			if DEBUG:
+				print(new_token)
+		else:
+			new_index = index + 1
+
+		return new_token, new_index, new_type
 
 	def clean_data(data={'data':[]}):
 		old_data = data['data']
@@ -121,11 +164,30 @@ class Parser:
 		self.text = text
 		self.length = len(text)
 		self.index = 0
-		self.state = BaseParseState
+		self.token_list = []
+		#self.parse_group = BaseParseGroup
+
+	def parse_text(self):
+		token = None
+		while self.index < self.length:
+			token, self.index, new_type = BaseParser.parse_text(self.text, self.index, token)
+			if token.finished:
+				self.token_list.append(token)
+				token = ParseToken(token_type=new_type)
+		if token is not None:
+			token.finalize()
+			self.token_list.append(token)
+
+		entry_list = []
+		for entry in self.token_list:
+			entry_list.append(entry.extract_entry())
+		result = {'data':entry_list}
+		return result
 
 	def parse_data(self):
-		parsed_data = self.state.parse_text(self.text)
-		return self.state.clean_data(parsed_data)
+		parsed_data = self.parse_text()
+		result = BaseParser.clean_data(parsed_data)
+		return result
 
 def parse_file(filename):
 	parser = Parser(extract_contents(filename))
